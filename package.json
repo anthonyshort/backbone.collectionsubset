@@ -30,7 +30,11 @@
   },
   "devDependencies": {
     "grunt": "~0.3.15",
-    "grunt-coffee": "*"
+    "grunt-coffee": "*",
+    "grunt-mocha": "*",
+    "mocha": "*",
+    "chai": "*",
+    "backbone": "*"
   },
   "keywords": []
 }

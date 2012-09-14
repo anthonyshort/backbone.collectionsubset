@@ -22,15 +22,7 @@ class Backbone.CollectionSubset
 
   # Borrow the extend method
   @extend: Backbone.Model.extend
-
-  # Add a method to mixin functionality
-  @include: (obj) ->
-    for key, value of obj when key not in moduleKeywords
-      if not @::[key] then @::[key] = value
-    obj.included?.apply(this)
-    this
-
-  @include Backbone.Events
+  _.extend @::, Backbone.Events
 
   constructor: (options = {})->
     options = _.defaults options,
@@ -89,7 +81,7 @@ class Backbone.CollectionSubset
       matchesFilter = fn.call @,model
       matchesParentFilter = if @parent.filterer then @parent.filterer.filter(model) else true
       return matchesFilter and matchesParentFilter
-    @filter = filter.bind(@)
+    @filter = _.bind(filter, @)
 
   # Reset the child collection completely with matching models
   # from the parent collection and trigger an event.
@@ -172,7 +164,14 @@ class Backbone.CollectionSubset
     @trigger 'dispose', this
     @parent.off null,null,@
     @child.off null,null,@
-    @child.dispose()
+    @child.dispose?()
     @off()
     delete this[prop] for prop in ['parent','child','options']
     @disposed = true
+
+Backbone.Collection::subcollection = (options = {}) ->
+  _.defaults options,
+    child: new this.constructor
+    parent: this
+  subset = new Backbone.CollectionSubset(options)
+  subset.child
