@@ -1,5 +1,5 @@
 {
-  "name": "Backbone.CollectionSubset",
+  "name": "backbone.collectionsubset",
   "version": "0.1.0",
   "main": "./dist/backbone.collectionsubset.min.js",
   "dependencies": {
