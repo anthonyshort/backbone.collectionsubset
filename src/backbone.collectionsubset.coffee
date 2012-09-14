@@ -45,7 +45,7 @@ class Backbone.CollectionSubset
   # event handlers to the collection. It also removed any
   # event handlers that this collection may have already
   # added to the parent.
-  setParent: (collection)->
+  setParent: (collection) ->
     @parent?.off(null,null,@)
     @parent = collection
     @parent.on 'add', @_onParentAdd, @
@@ -62,7 +62,7 @@ class Backbone.CollectionSubset
   # the subset from the child collection via .filterer and the parent
   # collection via .parent. The child URL is automatically set
   # to the parents URL as with the model.
-  setChild: (collection)->
+  setChild: (collection) ->
     @child?.off(null,null,@)
     @child = collection
     @child.on 'add', @_onChildAdd, @
