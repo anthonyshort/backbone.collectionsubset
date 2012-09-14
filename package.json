@@ -1,7 +1,7 @@
 {
   "name": "backbone.collectionsubset",
   "description": "Create sub-collections of other collections and keep them in sync",
-  "version": "0.1.0",
+  "version": "0.1.1",
   "homepage": "https://github.com/anthonyshort/backbone.collectionsubset",
   "author": {
     "name": "Anthony Short",

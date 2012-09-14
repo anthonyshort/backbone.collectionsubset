@@ -175,3 +175,5 @@ Backbone.Collection::subcollection = (options = {}) ->
     parent: this
   subset = new Backbone.CollectionSubset(options)
   subset.child
+
+module?.exports = Backbone.CollectionSubset
