@@ -32,18 +32,33 @@ today.fetch()
 
 ## Getting Started
 
+### Browser
+
 Download the [production version][min] or the [development version][max].
 
 [min]: https://raw.github.com/anthonyshort/backbone.collectionsubset/master/dist/backbone.collectionsubset.min.js
 [max]: https://raw.github.com/anthonyshort/backbone.collectionsubset/master/dist/backbone.collectionsubset.js
 
-In your web page:
 
 ```html
 <script src="dist/backbone.collectionsubset.min.js"></script>
 ```
 
-Now you have two methods for creating subsets (or subcollections).
+### Bower
+
+```
+bower install backbone.collectionsubset
+```
+
+### NPM
+
+```
+npm install backbone.collectionsubset
+```
+
+## Usage
+
+You have two methods for creating subsets (or subcollections).
 
 ### Collection::subcollection
 
