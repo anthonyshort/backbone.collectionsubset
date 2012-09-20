@@ -2,7 +2,23 @@
 
 [![Build Status](https://secure.travis-ci.org/anthonyshort/backbone.collectionsubset.png)](http://travis-ci.org/anthonyshort/backbone.collectionsubset)
 
-Create sub-collections of other collections and keep them in sync.
+Create sub-collections of other collections and keep them in sync. This library allows you create child collections that are subsets of larger collections based on a filter function. These children can then be further subset into even smaller collections. This creates a tree of collections with a single parent collection at the top. Adding a model to the root collection will automatically push the model down the tree and into subsets that match that model. 
+
+Each subset is its own independent collection. It can have its own URL for fetching which will add all the models to the parent collection and refilter the subset.
+
+Imagine you have a collection of tasks. You can create a subset for "today". If you add a model to the parent collection it will be pushed into the "today" collection. You can further subset the "today" collection into subsets for assigned users. 
+
+## Features
+
+* Create subsets of large collections
+* Subsets are independent collections and can have their own URL and properties.
+* Subsets will be reset when the parent is reset
+* Adding a model to a parent pushes it down into all subsets it belongs to firing add events in each
+* Adding a model to a child pushes it up to the top which will then move in into matching subsets
+* Models in subsets point to the object
+
+## Example
+
 
 ```coffee
 tasks = new TaskCollection
