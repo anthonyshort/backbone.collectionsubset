@@ -1,5 +1,7 @@
 # backbone.collectionsubset
 
+[![Build Status](https://secure.travis-ci.org/anthonyshort/backbone.collectionsubset.png)](http://travis-ci.org/anthonyshort/backbone.collectionsubset)
+
 Create sub-collections of other collections and keep them in sync.
 
 ```coffee
