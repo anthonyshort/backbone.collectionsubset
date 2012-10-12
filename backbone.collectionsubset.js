@@ -1,4 +1,4 @@
-/*! backbone.collectionsubset - v0.1.1 - 2012-09-14
+/*! backbone.collectionsubset - v0.1.1 - 2012-10-12
 * https://github.com/anthonyshort/backbone.collectionsubset
 * Copyright (c) 2012 Anthony Short; Licensed MIT */
 
