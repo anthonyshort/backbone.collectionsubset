@@ -1,6 +1,6 @@
 {
   "name": "backbone.collectionsubset",
-  "version": "0.1.1",
+  "version": "0.1.2",
   "main": "./dist/backbone.collectionsubset.min.js",
   "dependencies": {
     "backbone": "~0.9.2"
