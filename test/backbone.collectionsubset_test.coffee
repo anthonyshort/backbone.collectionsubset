@@ -35,6 +35,31 @@ describe 'CollectionSubset', ->
       subset = new Subset(child: child, parent: new Collection)
       expect(spy.called).to.be.true
 
+    describe 'passing childOptions', ->
+      it 'should pass along childOptions when using Collection.subcollection', ->
+        ExtendedCollection = Backbone.Collection.extend {
+          initialize: (models, options = {}) ->
+            if options.apiKey
+              @apiKey = options.apiKey
+        }
+        collection = new ExtendedCollection
+        subcollection = collection.subcollection {
+          childOptions: { apiKey: 'testValue' }
+        }
+        expect(subcollection.apiKey).to.equal 'testValue'
+
+      it 'should pass along childOptions when using "new Subset()"', ->
+        ExtendedCollection = Backbone.Collection.extend {
+          initialize: (models, options = {}) ->
+            if options.apiKey
+              @apiKey = options.apiKey
+        }
+        subset = new Subset({
+          parent: new ExtendedCollection,
+          childOptions: { apiKey: 'testValue' }
+        })
+        expect(subset.child.apiKey).to.equal 'testValue'
+
     it 'should accept a filter in the options', ->
       filter = ->
       options =

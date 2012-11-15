@@ -36,6 +36,48 @@ describe('CollectionSubset', function() {
       });
       return expect(spy.called).to.be["true"];
     });
+    describe('passing childOptions', function() {
+      it('should pass along childOptions when using Collection.subcollection', function() {
+        var ExtendedCollection, collection, subcollection;
+        ExtendedCollection = Backbone.Collection.extend({
+          initialize: function(models, options) {
+            if (options == null) {
+              options = {};
+            }
+            if (options.apiKey) {
+              return this.apiKey = options.apiKey;
+            }
+          }
+        });
+        collection = new ExtendedCollection;
+        subcollection = collection.subcollection({
+          childOptions: {
+            apiKey: 'testValue'
+          }
+        });
+        return expect(subcollection.apiKey).to.equal('testValue');
+      });
+      return it('should pass along childOptions when using "new Subset()"', function() {
+        var ExtendedCollection, subset;
+        ExtendedCollection = Backbone.Collection.extend({
+          initialize: function(models, options) {
+            if (options == null) {
+              options = {};
+            }
+            if (options.apiKey) {
+              return this.apiKey = options.apiKey;
+            }
+          }
+        });
+        subset = new Subset({
+          parent: new ExtendedCollection,
+          childOptions: {
+            apiKey: 'testValue'
+          }
+        });
+        return expect(subset.child.apiKey).to.equal('testValue');
+      });
+    });
     return it('should accept a filter in the options', function() {
       var filter, options, subset;
       filter = function() {};

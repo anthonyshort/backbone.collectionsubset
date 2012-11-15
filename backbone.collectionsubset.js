@@ -1,4 +1,4 @@
-/*! backbone.collectionsubset - v0.1.1 - 2012-10-12
+/*! backbone.collectionsubset - v0.1.2 - 2012-11-15
 * https://github.com/anthonyshort/backbone.collectionsubset
 * Copyright (c) 2012 Anthony Short; Licensed MIT */
 
@@ -22,11 +22,12 @@
         },
         name: null,
         child: null,
-        parent: null
+        parent: null,
+        childOptions: {}
       });
       this.triggers = options.triggers ? options.triggers.split(' ') : [];
       if (!options.child) {
-        options.child = new options.parent.constructor;
+        options.child = new options.parent.constructor([], options.childOptions);
       }
       this.setParent(options.parent);
       this.setChild(options.child);
@@ -213,7 +214,6 @@
       options = {};
     }
     _.defaults(options, {
-      child: new this.constructor,
       parent: this
     });
     subset = new Backbone.CollectionSubset(options);
