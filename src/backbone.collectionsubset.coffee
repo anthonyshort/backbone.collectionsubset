@@ -32,8 +32,10 @@ class Backbone.CollectionSubset
       name: null
       child: null
       parent: null
+      childOptions: {}
     @triggers = if options.triggers then options.triggers.split(' ') else []
-    options.child = new options.parent.constructor unless options.child
+    unless options.child
+      options.child = new options.parent.constructor([], options.childOptions)
     @setParent(options.parent)
     @setChild(options.child)
     @setFilter(options.filter)
@@ -171,7 +173,6 @@ class Backbone.CollectionSubset
 
 Backbone.Collection::subcollection = (options = {}) ->
   _.defaults options,
-    child: new this.constructor
     parent: this
   subset = new Backbone.CollectionSubset(options)
   subset.child
