@@ -94,7 +94,7 @@ class Backbone.CollectionSubset
   # from the parent. This means they are always using the same
   # object for models.
   _replaceChildModel: (parentModel)->
-    childModel = @child.getByCid(parentModel.cid)
+    childModel = @_getByCid(@child, parentModel.cid)
     return if childModel is parentModel
     if _.isUndefined(childModel)
       @child.add(parentModel,subset:this)
@@ -106,7 +106,7 @@ class Backbone.CollectionSubset
   # When a model is added to the parent collection
   # Add it to the child if it matches the filter.
   _onParentAdd: (model,collection,options)->
-    return if options.subset is this
+    return if options && options.subset is this
     if @filter(model)
       @_replaceChildModel(model)
 
@@ -132,9 +132,9 @@ class Backbone.CollectionSubset
   # When a model is added to the child
   # If the parent has the model replace the one just added to the child
   _onChildAdd: (model,collection,options)->
-    return if options.subset is this
+    return if options && options.subset is this
     @parent.add(model)
-    parentModel = @parent.getByCid(model.cid)
+    parentModel = @_getByCid(@parent, model.cid)
     return unless parentModel
     if @filter(parentModel)
       @_replaceChildModel(parentModel)
@@ -146,9 +146,15 @@ class Backbone.CollectionSubset
   # reset the child with the models from the parent
   # so they use the same model references
   _onChildReset: (collection,options)->
-    return if options.subset is this
+    return if options && options.subset is this
     @parent.add(@child.models)
     @refresh()
+
+  # Get a model by it's cid. Backbone 0.9.9 removes getByCid as
+  # get now handles cid transparently.
+  _getByCid: (model, cid) ->
+    fn = model.getByCid || model.get
+    fn.apply(model, [cid])
 
   # Determine if a trigger attribute was changed
   triggerMatched: (model)->
