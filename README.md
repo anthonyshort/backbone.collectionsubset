@@ -54,8 +54,8 @@ today.fetch()
 
 Download the [production version][min] or the [development version][max].
 
-[min]: https://raw.github.com/anthonyshort/backbone.collectionsubset/master/dist/backbone.collectionsubset.min.js
-[max]: https://raw.github.com/anthonyshort/backbone.collectionsubset/master/dist/backbone.collectionsubset.js
+[min]: https://raw.github.com/anthonyshort/backbone.collectionsubset/master/backbone.collectionsubset.min.js
+[max]: https://raw.github.com/anthonyshort/backbone.collectionsubset/master/backbone.collectionsubset.js
 
 
 ```html
