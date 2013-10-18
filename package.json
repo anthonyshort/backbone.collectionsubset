@@ -25,9 +25,6 @@
   "engines": {
     "node": "*"
   },
-  "scripts": {
-    "test": "grunt test"
-  },
   "devDependencies": {
     "grunt": "~0.4",
     "grunt-coffee": "*",
@@ -35,6 +32,7 @@
     "backbone": "*",
     "underscore": "*",
     "mocha": "*",
+    "chai": "*",
     "sinon": "*",
     "jquery": "*"
   },
