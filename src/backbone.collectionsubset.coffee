@@ -179,6 +179,8 @@ Backbone.Collection::subcollection = (options = {}) ->
   _.defaults options,
     child: new this.constructor
     parent: this
+    comparator: @comparator
+  options.child.comparator = options.comparator
   subset = new Backbone.CollectionSubset(options)
   subset.child
 

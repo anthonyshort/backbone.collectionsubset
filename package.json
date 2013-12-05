@@ -21,7 +21,7 @@
       "url": "https://github.com/anthonyshort/backbone.collectionsubset/blob/master/LICENSE-MIT"
     }
   ],
-  "main": "lib/backbone.collectionsubset",
+  "main": "backbone.collectionsubset",
   "engines": {
     "node": "*"
   },
@@ -34,7 +34,10 @@
     "mocha": "*",
     "chai": "*",
     "sinon": "*",
-    "jquery": "*"
+    "jquery": "*",
+    "grunt-contrib-uglify": "*",
+    "grunt-contrib-coffee": "~0.7.0",
+    "grunt-mocha-test": "*"
   },
   "scripts": {
     "test": "mocha -R spec"

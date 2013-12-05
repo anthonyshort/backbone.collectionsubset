@@ -1,11 +1,5 @@
-/*! backbone.collectionsubset - v0.1.2 - 2012-12-20
-* https://github.com/anthonyshort/backbone.collectionsubset
-* Copyright (c) 2012 Anthony Short; Licensed MIT */
-
 (function() {
-
   Backbone.CollectionSubset = (function() {
-
     CollectionSubset.extend = Backbone.Model.extend;
 
     _.extend(CollectionSubset.prototype, Backbone.Events);
@@ -220,8 +214,10 @@
     }
     _.defaults(options, {
       child: new this.constructor,
-      parent: this
+      parent: this,
+      comparator: this.comparator
     });
+    options.child.comparator = options.comparator;
     subset = new Backbone.CollectionSubset(options);
     return subset.child;
   };
