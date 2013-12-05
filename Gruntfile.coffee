@@ -1,13 +1,6 @@
 module.exports = (grunt) ->
   grunt.initConfig
     pkg: grunt.file.readJSON("package.json")
-    dist:
-      
-      # the files to concatenate
-      src: ["src/**/*.js"]
-      
-      # the location of the resulting JS file
-      dest: "<%= pkg.name %>.js"
 
     coffee:
       compile:

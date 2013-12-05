@@ -24,6 +24,21 @@ describe('CollectionSubset', function() {
       parent: this.collection
     });
   });
+
+  describe('Backbone.Collection.prototype.subcollection', function() {
+    beforeEach(function() {
+      this.collection = new Backbone.Collection;
+      return this.collection.comparator = 'attribute1';
+    });
+    it('should default the comparator to the parent collection comparator', function() {
+      subcollection = this.collection.subcollection();
+      return expect(subcollection.comparator).to.equal('attribute1');
+    });
+    return it('should accept a comparator in the options', function() {
+      subcollection = this.collection.subcollection({comparator: 'attribute2'});
+      return expect(subcollection.comparator).to.equal('attribute2');
+    });
+  });
   describe('creating a new subset', function() {
     it('should take a string of triggers and split them into an array', function() {
       var options, subset;
