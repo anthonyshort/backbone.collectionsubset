@@ -1,6 +1,6 @@
 # backbone.collectionsubset
 
-[![Build Status](https://secure.travis-ci.org/anthonyshort/backbone.collectionsubset.png)](http://travis-ci.org/anthonyshort/backbone.collectionsubset)
+[![Build Status](https://secure.travis-ci.org/zawaideh/backbone.collectionsubset.png)](http://travis-ci.org/zawaideh/backbone.collectionsubset)
 
 Create sub-collections of other collections and keep them in sync. This library allows you create child collections that are subsets of larger collections based on a filter function. These children can then be further subset into even smaller collections. This creates a tree of collections with a single parent collection at the top. Adding a model to the root collection will automatically push the model down the tree and into subsets that match that model. 
 

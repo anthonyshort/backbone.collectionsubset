@@ -1,11 +1,5 @@
-/*! backbone.collectionsubset - v0.1.2 - 2012-12-20
-* https://github.com/anthonyshort/backbone.collectionsubset
-* Copyright (c) 2012 Anthony Short; Licensed MIT */
-
 (function() {
-
   Backbone.CollectionSubset = (function() {
-
     CollectionSubset.extend = Backbone.Model.extend;
 
     _.extend(CollectionSubset.prototype, Backbone.Events);
@@ -28,6 +22,7 @@
       if (!options.child) {
         options.child = new options.parent.constructor;
       }
+      options.child.comparator = options.comparator;
       this.setParent(options.parent);
       this.setChild(options.child);
       this.setFilter(options.filter);
@@ -69,6 +64,9 @@
       this.child.on('add', this._onChildAdd, this);
       this.child.on('reset', this._onChildReset, this);
       this.child.on('dispose', this.dispose, this);
+      if (this.child.comparator != null) {
+        this.child.on("change:" + this.child.comparator, this.child.sort);
+      }
       this.child.superset = this.parent;
       this.child.filterer = this;
       this.child.url = this.parent.url;
@@ -220,7 +218,8 @@
     }
     _.defaults(options, {
       child: new this.constructor,
-      parent: this
+      parent: this,
+      comparator: this.comparator
     });
     subset = new Backbone.CollectionSubset(options);
     return subset.child;
