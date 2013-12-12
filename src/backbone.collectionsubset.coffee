@@ -34,6 +34,7 @@ class Backbone.CollectionSubset
       parent: null
     @triggers = if options.triggers then options.triggers.split(' ') else []
     options.child = new options.parent.constructor unless options.child
+    options.child.comparator = options.comparator
     @setParent(options.parent)
     @setChild(options.child)
     @setFilter(options.filter)
@@ -68,6 +69,7 @@ class Backbone.CollectionSubset
     @child.on 'add', @_onChildAdd, @
     @child.on 'reset', @_onChildReset, @
     @child.on 'dispose', @dispose, @
+    @child.on("change:#{@child.comparator}", @child.sort) if @child.comparator?
     @child.superset = @parent
     @child.filterer = @
     @child.url = @parent.url
@@ -180,7 +182,6 @@ Backbone.Collection::subcollection = (options = {}) ->
     child: new this.constructor
     parent: this
     comparator: @comparator
-  options.child.comparator = options.comparator
   subset = new Backbone.CollectionSubset(options)
   subset.child
 

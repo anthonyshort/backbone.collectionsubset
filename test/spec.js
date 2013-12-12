@@ -278,6 +278,29 @@ describe('CollectionSubset', function() {
         return expect(spy.called).to.equal(false);
       });
     });
+    describe('sorting of child when changing a model on the parent', function() {
+      return it('should resort the child when it has a comparator', function() {
+        var child, model, parent, spy, subset;
+        parent = new Collection;
+        child = new Collection;
+        model = new Model({id:1, position: 5});
+        model2 = new Model({id:2, position: 1});
+        model3 = new Model({id:3, position: 3});
+        parent.add([model, model2, model3]);
+        subset = new Subset({
+          parent: parent,
+          child: child,
+          comparator: 'position'
+        });
+        child.add(model);
+        spy = sinon.spy();
+        child.on('sort', spy);
+        model2.set('position', 6)
+        expect(child.at(0).get('id')).to.equal(3);
+        expect(child.at(1).get('id')).to.equal(1);
+        return expect(child.at(2).get('id')).to.equal(2);
+      });
+    });
     describe('when the child already contains a different instance of the model', function() {
       return it('should replace the childs model with the parents model if they are different instances and fire an "add" event on the child', function() {
         var child, model, model2, parent, spy, subset;

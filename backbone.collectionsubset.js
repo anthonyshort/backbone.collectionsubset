@@ -22,6 +22,7 @@
       if (!options.child) {
         options.child = new options.parent.constructor;
       }
+      options.child.comparator = options.comparator;
       this.setParent(options.parent);
       this.setChild(options.child);
       this.setFilter(options.filter);
@@ -63,6 +64,9 @@
       this.child.on('add', this._onChildAdd, this);
       this.child.on('reset', this._onChildReset, this);
       this.child.on('dispose', this.dispose, this);
+      if (this.child.comparator != null) {
+        this.child.on("change:" + this.child.comparator, this.child.sort);
+      }
       this.child.superset = this.parent;
       this.child.filterer = this;
       this.child.url = this.parent.url;
@@ -217,7 +221,6 @@
       parent: this,
       comparator: this.comparator
     });
-    options.child.comparator = options.comparator;
     subset = new Backbone.CollectionSubset(options);
     return subset.child;
   };
