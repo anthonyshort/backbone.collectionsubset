@@ -29,8 +29,12 @@
     "test": "grunt test"
   },
   "devDependencies": {
-    "grunt": "~0.3.15",
-    "grunt-coffee": "*",
+    "grunt": "~0.4.3",
+    "grunt-contrib-coffee": "*",
+    "grunt-contrib-uglify": "*",
+    "grunt-contrib-concat": "*",
+    "grunt-preprocess": "*",
+    "grunt-autowrap": "*",
     "grunt-mocha": "*",
     "mocha": "*",
     "chai": "*",

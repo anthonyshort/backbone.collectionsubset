@@ -1,11 +1,9 @@
-/*! backbone.collectionsubset - v0.1.2 - 2012-12-20
+/*! backbone.collectionsubset - v0.1.2 - 2014-03-26
 * https://github.com/anthonyshort/backbone.collectionsubset
-* Copyright (c) 2012 Anthony Short; Licensed MIT */
+* Copyright (c) 2014 Anthony Short; Licensed MIT */
 
 (function() {
-
   Backbone.CollectionSubset = (function() {
-
     CollectionSubset.extend = Backbone.Model.extend;
 
     _.extend(CollectionSubset.prototype, Backbone.Events);
@@ -41,8 +39,7 @@
     }
 
     CollectionSubset.prototype.setParent = function(collection) {
-      var _ref,
-        _this = this;
+      var _ref;
       if ((_ref = this.parent) != null) {
         _ref.off(null, null, this);
       }
@@ -52,12 +49,16 @@
       this.parent.on('reset', this._onParentReset, this);
       this.parent.on('change', this._onParentChange, this);
       this.parent.on('dispose', this.dispose, this);
-      this.parent.on('loading', (function() {
-        return _this.child.trigger('loading');
-      }), this);
-      return this.parent.on('ready', (function() {
-        return _this.child.trigger('ready');
-      }), this);
+      this.parent.on('loading', ((function(_this) {
+        return function() {
+          return _this.child.trigger('loading');
+        };
+      })(this)), this);
+      return this.parent.on('ready', ((function(_this) {
+        return function() {
+          return _this.child.trigger('ready');
+        };
+      })(this)), this);
     };
 
     CollectionSubset.prototype.setChild = function(collection) {
