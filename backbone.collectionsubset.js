@@ -2,7 +2,7 @@
 * https://github.com/anthonyshort/backbone.collectionsubset
 * Copyright (c) 2012 Anthony Short; Licensed MIT */
 
-(function() {
+(function(_) {
 
   Backbone.CollectionSubset = (function() {
 
@@ -230,4 +230,4 @@
     module.exports = Backbone.CollectionSubset;
   }
 
-}).call(this);
+}).call(this, _);
