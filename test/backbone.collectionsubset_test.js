@@ -36,7 +36,7 @@ describe('CollectionSubset', function() {
       });
       return expect(spy.called).to.be["true"];
     });
-    return it('should accept a filter in the options', function() {
+    it('should accept a filter in the options', function() {
       var filter, options, subset;
       filter = function() {};
       options = {
@@ -46,6 +46,20 @@ describe('CollectionSubset', function() {
       };
       subset = new Subset(options);
       return expect(subset.filter).to.exist;
+    });
+    return it('should not remove models from child if refresh false', function() {
+      var child, model, options, parent, subset;
+      model = new Model;
+      parent = new Collection;
+      child = new Collection;
+      child.add(model);
+      options = {
+        parent: parent,
+        child: child,
+        refresh: false
+      };
+      subset = new Subset(options);
+      return expect(child.length).to.equal(1);
     });
   });
   describe('setting the parent', function() {
@@ -232,7 +246,8 @@ describe('CollectionSubset', function() {
         child.on('update', spy);
         subset = new Subset({
           parent: parent,
-          child: child
+          child: child,
+          refresh: false
         });
         parent.add(model);
         return expect(spy.called).to.equal(false);
@@ -574,7 +589,7 @@ describe('CollectionSubset', function() {
       return subset.dispose();
     });
   });
-  return describe('the cascading of models along the tree', function() {
+  describe('the cascading of models along the tree', function() {
     var child, grandparent, model1, model2, model3, model4, model5, parent;
     grandparent = null;
     parent = null;
@@ -750,6 +765,36 @@ describe('CollectionSubset', function() {
         expect(parent.length).to.equal(2);
         expect(parent2.length).to.equal(4);
         return expect(grandparent.length).to.equal(5);
+      });
+    });
+  });
+  return describe('updating model', function() {
+    return it('should remove model from child collection', function() {
+      var child, filter, model, parent, subset;
+      filter = function() {
+        return model.get('prop') === 'val';
+      };
+      parent = new Collection;
+      child = new Collection;
+      model = new Model({
+        id: 1
+      });
+      parent.add(model);
+      model.on('remove', function(model, collection, options) {
+        return expect(collection).to.equal(child);
+      });
+      subset = new Subset({
+        parent: parent,
+        child: child,
+        filter: filter
+      });
+      expect(child.length).to.equal(0);
+      model.set({
+        prop: 'val'
+      });
+      expect(child.length).to.equal(1);
+      return model.set({
+        prop: null
       });
     });
   });

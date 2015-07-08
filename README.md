@@ -1,4 +1,4 @@
-# backbone.collectionsubset
+# backbone.collectionsubset 
 
 [![Build Status](https://secure.travis-ci.org/anthonyshort/backbone.collectionsubset.png)](http://travis-ci.org/anthonyshort/backbone.collectionsubset)
 
@@ -94,6 +94,40 @@ var today = tasks.subcollection({
 
 `today` will be an instance of `tasks.constructor`, in this case, `TaskCollection`.
 
+### Listening to model remove event
+
+As model may be part of multiple collections, listening to model remove event needs little more care.
+You **SHOULD NOT** listen to model remove event, without checking which collection it was actually removed from.
+It could be removed from parent collection, or any other subcollection, but model remove event is triggered in
+case of any collection removal.
+
+Don't do this:
+
+```
+model.on('remove', callback);
+```
+
+Instead do this:
+
+```
+var parent = new Backbone.Collection;
+var child = new Backbone.Collection; //subcollection of parent collection
+var model = new Backbone.Model;
+
+subset = new Backbone.CollectionSubset({
+  parent: parent,
+  child: child,
+  filter: modelFilterFnc
+});
+
+parent.add(model);
+
+model.on('remove', function (model, collection, options) {
+  if (collection === child) {
+    //handle model removed from child collection
+});
+```
+
 ### Backbone.CollectionSubset
 
 If you need access to the subset object itself (you might want to modify the filter) you can create a subset directly.
@@ -173,7 +207,20 @@ In lieu of a formal styleguide, take care to maintain the existing coding style.
 _Also, please don't edit files in the "dist" subdirectory as they are generated via grunt. You'll find source code in the "lib" subdirectory!_
 
 ## Release History
-_(Nothing yet)_
+
+## [0.1.4][unreleased]
+### Changed
+- UMD wrapper for production version
+- upgrading grunt & node_modules
+- tests dependencies as bower dev dependencies
+- making load event compatible with backbone SOS
+- backbone dev dependency version
+
+### Fixed
+- fixing failing child already contains the model test
+
+### Added
+- section into README.MD about handling of model remove events
 
 ## License
 Copyright (c) 2012 Anthony Short

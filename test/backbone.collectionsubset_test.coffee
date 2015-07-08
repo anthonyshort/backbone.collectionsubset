@@ -44,6 +44,19 @@ describe 'CollectionSubset', ->
       subset = new Subset(options)
       expect(subset.filter).to.exist
 
+    it 'should not remove models from child if refresh false', ->
+      model = new Model
+      parent = new Collection
+      child = new Collection
+      child.add model
+      options =
+        parent: parent,
+        child: child,
+        refresh: false
+      subset = new Subset(options)
+      expect(child.length).to.equal 1
+
+
   describe 'setting the parent', ->
 
     # it 'should throw an error if the parent is not a collection', ->
@@ -185,7 +198,7 @@ describe 'CollectionSubset', ->
         child.add(model)
         spy = sinon.spy()
         child.on 'update',spy
-        subset = new Subset(parent:parent,child:child)
+        subset = new Subset(parent:parent,child:child,refresh:false)
         parent.add(model)
         expect(spy.called).to.equal false
 
@@ -573,4 +586,18 @@ describe 'CollectionSubset', ->
         expect(parent2.length).to.equal 4
         expect(grandparent.length).to.equal 5
 
-
+  describe 'updating model', ->
+    it 'should remove model from child collection', ->
+      filter = ->
+        model.get('prop') == 'val'
+      parent = new Collection
+      child = new Collection
+      model = new Model({id:1})
+      parent.add(model)
+      model.on 'remove', (model, collection, options)->
+        expect(collection).to.equal child
+      subset = new Subset(parent:parent,child:child,filter:filter)
+      expect(child.length).to.equal 0
+      model.set({prop: 'val'})
+      expect(child.length).to.equal 1
+      model.set({prop: null})

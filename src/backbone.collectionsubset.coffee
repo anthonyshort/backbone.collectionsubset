@@ -54,7 +54,7 @@ class Backbone.CollectionSubset
     @parent.on 'change', @_onParentChange, @
     @parent.on 'dispose', @dispose, @
     @parent.on 'loading', (=> @child.trigger('loading')), @
-    @parent.on 'ready', (=> @child.trigger('ready')), @
+    @parent.on 'sync error', (=> @child.trigger('loaded')), @
 
   # Set the child collection. This attached a number of event
   # handlers to the child and removed any events that were
