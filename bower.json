@@ -1,0 +1,33 @@
+{
+  "name": "backbone.collectionsubset",
+  "version": "0.1.4",
+  "main": "./backbone.collectionsubset.min.js",
+  "dependencies": {
+    "backbone": ">=0.9.9"
+  },
+  "homepage": "https://github.com/anthonyshort/backbone.collectionsubset",
+  "authors": [
+    "Anthony Short <antshort@gmail.com>"
+  ],
+  "description": "Create sub-collections of other collections and keep them in sync",
+  "moduleType": [
+    "amd",
+    "globals"
+  ],
+  "license": "MIT",
+  "ignore": [
+    "**/.*",
+    "node_modules",
+    "bower_components",
+    "test",
+    "tests"
+  ],
+  "devDependencies": {
+    "underscore": "~1.8.3",
+    "backbone": "~1.2.1",
+    "mocha": "~2.2.5",
+    "jquery": "~2.1.4",
+    "chai": "~3.0.0",
+    "sinonjs": "~1.14.1"
+  }
+}

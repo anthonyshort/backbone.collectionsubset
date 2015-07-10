@@ -1,11 +1,22 @@
-/*! backbone.collectionsubset - v0.1.2 - 2012-12-20
-* https://github.com/anthonyshort/backbone.collectionsubset
-* Copyright (c) 2012 Anthony Short; Licensed MIT */
+/*! backbone.collectionsubset - v0.1.4 - 2015-07-10\n* https://github.com/anthonyshort/backbone.collectionsubset
+* Copyright (c) 2015 Anthony Short; Licensed MIT */(function (root, factory) {
+  if (typeof define === 'function' && define.amd) {
+    // AMD. Register as an anonymous module unless amdModuleId is set
+    define(["backbone","underscore"], function (a0,b1) {
+      return (factory(a0,b1));
+    });
+  } else if (typeof exports === 'object') {
+    // Node. Does not work with strict CommonJS, but
+    // only CommonJS-like environments that support module.exports,
+    // like Node.
+    module.exports = factory(require("backbone"),require("underscore"));
+  } else {
+    factory(backbone,underscore);
+  }
+}(this, function (backbone, underscore) {
 
 (function() {
-
   Backbone.CollectionSubset = (function() {
-
     CollectionSubset.extend = Backbone.Model.extend;
 
     _.extend(CollectionSubset.prototype, Backbone.Events);
@@ -41,10 +52,9 @@
     }
 
     CollectionSubset.prototype.setParent = function(collection) {
-      var _ref,
-        _this = this;
-      if ((_ref = this.parent) != null) {
-        _ref.off(null, null, this);
+      var ref;
+      if ((ref = this.parent) != null) {
+        ref.off(null, null, this);
       }
       this.parent = collection;
       this.parent.on('add', this._onParentAdd, this);
@@ -52,18 +62,22 @@
       this.parent.on('reset', this._onParentReset, this);
       this.parent.on('change', this._onParentChange, this);
       this.parent.on('dispose', this.dispose, this);
-      this.parent.on('loading', (function() {
-        return _this.child.trigger('loading');
-      }), this);
-      return this.parent.on('ready', (function() {
-        return _this.child.trigger('ready');
-      }), this);
+      this.parent.on('loading', ((function(_this) {
+        return function() {
+          return _this.child.trigger('loading');
+        };
+      })(this)), this);
+      return this.parent.on('sync error', ((function(_this) {
+        return function() {
+          return _this.child.trigger('loaded');
+        };
+      })(this)), this);
     };
 
     CollectionSubset.prototype.setChild = function(collection) {
-      var _ref;
-      if ((_ref = this.child) != null) {
-        _ref.off(null, null, this);
+      var ref;
+      if ((ref = this.child) != null) {
+        ref.off(null, null, this);
       }
       this.child = collection;
       this.child.on('add', this._onChildAdd, this);
@@ -190,20 +204,20 @@
     };
 
     CollectionSubset.prototype.dispose = function() {
-      var prop, _base, _i, _len, _ref;
+      var base, i, len, prop, ref;
       if (this.disposed) {
         return;
       }
       this.trigger('dispose', this);
       this.parent.off(null, null, this);
       this.child.off(null, null, this);
-      if (typeof (_base = this.child).dispose === "function") {
-        _base.dispose();
+      if (typeof (base = this.child).dispose === "function") {
+        base.dispose();
       }
       this.off();
-      _ref = ['parent', 'child', 'options'];
-      for (_i = 0, _len = _ref.length; _i < _len; _i++) {
-        prop = _ref[_i];
+      ref = ['parent', 'child', 'options'];
+      for (i = 0, len = ref.length; i < len; i++) {
+        prop = ref[i];
         delete this[prop];
       }
       return this.disposed = true;
@@ -231,3 +245,6 @@
   }
 
 }).call(this);
+
+
+}));

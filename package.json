@@ -1,7 +1,7 @@
 {
   "name": "backbone.collectionsubset",
   "description": "Create sub-collections of other collections and keep them in sync",
-  "version": "0.1.2",
+  "version": "0.1.4",
   "homepage": "https://github.com/anthonyshort/backbone.collectionsubset",
   "author": {
     "name": "Anthony Short",
@@ -15,6 +15,7 @@
   "bugs": {
     "url": "https://github.com/anthonyshort/backbone.collectionsubset/issues"
   },
+  "license": "MIT",
   "licenses": [
     {
       "type": "MIT",
@@ -26,15 +27,18 @@
     "node": "*"
   },
   "scripts": {
-    "test": "grunt test"
+    "test": "bower install && grunt test"
   },
   "devDependencies": {
-    "grunt": "~0.3.15",
-    "grunt-coffee": "*",
-    "grunt-mocha": "*",
-    "mocha": "*",
+    "backbone": "*",
     "chai": "*",
-    "backbone": "*"
+    "grunt": "~0.4.5",
+    "grunt-contrib-coffee": "~0.13.0",
+    "grunt-contrib-concat": "~0.5.1",
+    "grunt-contrib-uglify": "~0.9.1",
+    "grunt-mocha": "~0.4.13",
+    "grunt-umd": "~2.3.3",
+    "mocha": "*"
   },
   "keywords": []
 }

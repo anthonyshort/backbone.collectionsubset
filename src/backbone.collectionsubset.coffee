@@ -34,6 +34,7 @@ class Backbone.CollectionSubset
       parent: null
     @triggers = if options.triggers then options.triggers.split(' ') else []
     options.child = new options.parent.constructor unless options.child
+    options.child.comparator = options.comparator
     @setParent(options.parent)
     @setChild(options.child)
     @setFilter(options.filter)
@@ -54,7 +55,7 @@ class Backbone.CollectionSubset
     @parent.on 'change', @_onParentChange, @
     @parent.on 'dispose', @dispose, @
     @parent.on 'loading', (=> @child.trigger('loading')), @
-    @parent.on 'ready', (=> @child.trigger('ready')), @
+    @parent.on 'sync error', (=> @child.trigger('loaded')), @
 
   # Set the child collection. This attached a number of event
   # handlers to the child and removed any events that were
@@ -68,6 +69,7 @@ class Backbone.CollectionSubset
     @child.on 'add', @_onChildAdd, @
     @child.on 'reset', @_onChildReset, @
     @child.on 'dispose', @dispose, @
+    @child.on("change:#{@child.comparator}", @child.sort) if @child.comparator?
     @child.superset = @parent
     @child.filterer = @
     @child.url = @parent.url
@@ -179,6 +181,7 @@ Backbone.Collection::subcollection = (options = {}) ->
   _.defaults options,
     child: new this.constructor
     parent: this
+    comparator: @comparator
   subset = new Backbone.CollectionSubset(options)
   subset.child
 

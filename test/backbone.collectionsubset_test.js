@@ -14,6 +14,24 @@ describe('CollectionSubset', function() {
       parent: this.collection
     });
   });
+  describe('Backbone.Collection.prototype.subcollection', function() {
+    beforeEach(function() {
+      this.collection = new Backbone.Collection;
+      return this.collection.comparator = 'attribute1';
+    });
+    it('should default the comparator to the parent collection comparator', function() {
+      var subcollection;
+      subcollection = this.collection.subcollection();
+      return expect(subcollection.comparator).to.equal('attribute1');
+    });
+    return it('should accept a comparator in the options', function() {
+      var subcollection;
+      subcollection = this.collection.subcollection({
+        comparator: 'attribute2'
+      });
+      return expect(subcollection.comparator).to.equal('attribute2');
+    });
+  });
   describe('creating a new subset', function() {
     it('should take a string of triggers and split them into an array', function() {
       var options, subset;
@@ -36,7 +54,7 @@ describe('CollectionSubset', function() {
       });
       return expect(spy.called).to.be["true"];
     });
-    return it('should accept a filter in the options', function() {
+    it('should accept a filter in the options', function() {
       var filter, options, subset;
       filter = function() {};
       options = {
@@ -46,6 +64,20 @@ describe('CollectionSubset', function() {
       };
       subset = new Subset(options);
       return expect(subset.filter).to.exist;
+    });
+    return it('should not remove models from child if refresh false', function() {
+      var child, model, options, parent, subset;
+      model = new Model;
+      parent = new Collection;
+      child = new Collection;
+      child.add(model);
+      options = {
+        parent: parent,
+        child: child,
+        refresh: false
+      };
+      subset = new Subset(options);
+      return expect(child.length).to.equal(1);
     });
   });
   describe('setting the parent', function() {
@@ -232,7 +264,8 @@ describe('CollectionSubset', function() {
         child.on('update', spy);
         subset = new Subset({
           parent: parent,
-          child: child
+          child: child,
+          refresh: false
         });
         parent.add(model);
         return expect(spy.called).to.equal(false);
@@ -251,6 +284,38 @@ describe('CollectionSubset', function() {
         child.on('all', spy);
         parent.add(model);
         return expect(spy.called).to.equal(false);
+      });
+    });
+    describe('sorting of child when changing a model on the parent', function() {
+      return it('should resort the child when it has a comparator', function() {
+        var child, model, model2, model3, parent, spy, subset;
+        parent = new Collection;
+        child = new Collection;
+        model = new Model({
+          id: 1,
+          position: 5
+        });
+        model2 = new Model({
+          id: 2,
+          position: 1
+        });
+        model3 = new Model({
+          id: 3,
+          position: 3
+        });
+        parent.add([model, model2, model3]);
+        subset = new Subset({
+          parent: parent,
+          child: child,
+          comparator: 'position'
+        });
+        child.add(model);
+        spy = sinon.spy();
+        child.on('sort', spy);
+        model2.set('position', 6);
+        expect(child.at(0).get('id')).to.equal(3);
+        expect(child.at(1).get('id')).to.equal(1);
+        return expect(child.at(2).get('id')).to.equal(2);
       });
     });
     describe('when the child already contains a different instance of the model', function() {
@@ -574,7 +639,7 @@ describe('CollectionSubset', function() {
       return subset.dispose();
     });
   });
-  return describe('the cascading of models along the tree', function() {
+  describe('the cascading of models along the tree', function() {
     var child, grandparent, model1, model2, model3, model4, model5, parent;
     grandparent = null;
     parent = null;
@@ -750,6 +815,36 @@ describe('CollectionSubset', function() {
         expect(parent.length).to.equal(2);
         expect(parent2.length).to.equal(4);
         return expect(grandparent.length).to.equal(5);
+      });
+    });
+  });
+  return describe('updating model', function() {
+    return it('should remove model from child collection', function() {
+      var child, filter, model, parent, subset;
+      filter = function() {
+        return model.get('prop') === 'val';
+      };
+      parent = new Collection;
+      child = new Collection;
+      model = new Model({
+        id: 1
+      });
+      parent.add(model);
+      model.on('remove', function(model, collection, options) {
+        return expect(collection).to.equal(child);
+      });
+      subset = new Subset({
+        parent: parent,
+        child: child,
+        filter: filter
+      });
+      expect(child.length).to.equal(0);
+      model.set({
+        prop: 'val'
+      });
+      expect(child.length).to.equal(1);
+      return model.set({
+        prop: null
       });
     });
   });
