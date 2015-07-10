@@ -208,6 +208,12 @@ _Also, please don't edit files in the "dist" subdirectory as they are generated 
 
 ## Release History
 
+## [0.1.5][Unreleased]
+### Added
+Merging [Sandglaz repo](https://github.com/Sandglaz/backbone.collectionsubset)
+- subcollection comparator can now be set in the options [commit](https://github.com/Sandglaz/backbone.collectionsubset/commit/94efc732852cbff2441d8cc4482a8da6a445ab8f)
+- child collections now preserve their sort order when they have a comparator defined [commit](https://github.com/Sandglaz/backbone.collectionsubset/commit/f223f3040bf5984bd3bd9e04d5202fc659fac954)
+
 ## [0.1.4] - 2015-07-10
 ### Changed
 - UMD wrapper for production version

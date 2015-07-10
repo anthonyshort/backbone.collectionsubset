@@ -14,6 +14,24 @@ describe('CollectionSubset', function() {
       parent: this.collection
     });
   });
+  describe('Backbone.Collection.prototype.subcollection', function() {
+    beforeEach(function() {
+      this.collection = new Backbone.Collection;
+      return this.collection.comparator = 'attribute1';
+    });
+    it('should default the comparator to the parent collection comparator', function() {
+      var subcollection;
+      subcollection = this.collection.subcollection();
+      return expect(subcollection.comparator).to.equal('attribute1');
+    });
+    return it('should accept a comparator in the options', function() {
+      var subcollection;
+      subcollection = this.collection.subcollection({
+        comparator: 'attribute2'
+      });
+      return expect(subcollection.comparator).to.equal('attribute2');
+    });
+  });
   describe('creating a new subset', function() {
     it('should take a string of triggers and split them into an array', function() {
       var options, subset;
@@ -266,6 +284,38 @@ describe('CollectionSubset', function() {
         child.on('all', spy);
         parent.add(model);
         return expect(spy.called).to.equal(false);
+      });
+    });
+    describe('sorting of child when changing a model on the parent', function() {
+      return it('should resort the child when it has a comparator', function() {
+        var child, model, model2, model3, parent, spy, subset;
+        parent = new Collection;
+        child = new Collection;
+        model = new Model({
+          id: 1,
+          position: 5
+        });
+        model2 = new Model({
+          id: 2,
+          position: 1
+        });
+        model3 = new Model({
+          id: 3,
+          position: 3
+        });
+        parent.add([model, model2, model3]);
+        subset = new Subset({
+          parent: parent,
+          child: child,
+          comparator: 'position'
+        });
+        child.add(model);
+        spy = sinon.spy();
+        child.on('sort', spy);
+        model2.set('position', 6);
+        expect(child.at(0).get('id')).to.equal(3);
+        expect(child.at(1).get('id')).to.equal(1);
+        return expect(child.at(2).get('id')).to.equal(2);
       });
     });
     describe('when the child already contains a different instance of the model', function() {
